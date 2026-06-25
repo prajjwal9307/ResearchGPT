@@ -1,0 +1,26 @@
+[
+    {
+        "role": "user",
+        "content": "Give me Short Summary of this Pdf"
+    },
+    {
+        "role": "assistant",
+        "content": "The PDF discusses the concepts of multi-tasking and multi-threading. A process is a program under execution, residing in primary memory (RAM), and can be divided into threads, which are independent paths of execution. Multi-tasking refers to the execution of multiple tasks simultaneously, while multi-threading is a concept where a process is divided into multiple threads that share the same memory and resources. The PDF also explains the differences between thread context switching and process context switching, highlighting that thread context switching is faster and preserves the CPU's cache state, whereas process context switching is slower and flushes the CPU's cache state.",
+        "sources": [
+            "Lec-3.pdf - Page 1",
+            "Lec-3.pdf - Page 2"
+        ]
+    },
+    {
+        "role": "user",
+        "content": "Give me bullete differance beetween this both multi-tasking and multi-threading."
+    },
+    {
+        "role": "assistant",
+        "content": "Here are the bulleted differences between multi-tasking and multi-threading:\n\n* **Multi-Tasking**:\n  * The execution of more than one task simultaneously\n  * Concept of more than 1 processes being context switched\n  * No. of CPU: 1\n  * Isolation and memory protection exists\n  * OS must allocate separate memory and resources to each program that CPU is executing\n  * Process context switching: OS saves current state of process & switches to another process by restoring its state, CPU\u2019s cache state is flushed, includes switching of memory address space\n\n* **Multi-Threading**:\n  * A process is divided into several different sub-tasks called as threads, which has its own path of execution\n  * Concept of more than 1 thread\n  * No. of CPU: >= 1 (Better to have more than 1)\n  * No isolation and memory protection, resources are shared among threads of that process\n  * OS allocates memory to a process; multiple threads of that process share the same memory and resources allocated to the process\n  * Thread context switching: OS saves current state of thread & switches to another thread of same process, CPU\u2019s cache state is preserved, doesn\u2019t include switching of memory address space",
+        "sources": [
+            "Lec-3.pdf - Page 1",
+            "Lec-3.pdf - Page 2"
+        ]
+    }
+]

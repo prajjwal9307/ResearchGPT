@@ -1,0 +1,13 @@
+[
+    {
+        "role": "user",
+        "content": "Give me simple Summary "
+    },
+    {
+        "role": "assistant",
+        "content": "The document context discusses various operating system concepts, including zombie processes, swapping, context-switching, orphan processes, and different scheduling algorithms. \n\nTo summarize: \n- A zombie process is a process that has completed its execution but still has an entry in the process table, usually occurring in child processes.\n- Swapping is a mechanism that removes processes from memory to reduce multi-programming and can reintroduce them later.\n- Context-switching involves saving the state of the current process and loading the state of a new process.\n- Orphan processes are those whose parent process has been terminated, and they are adopted by the init process.\n- Different scheduling algorithms are discussed, including SJF, priority scheduling, and round-robin scheduling, each with their advantages and disadvantages.",
+        "sources": [
+            "Lec-13_Notes_p.pdf - Page 1"
+        ]
+    }
+]

@@ -1,0 +1,182 @@
+# System Architecture – AI-Powered Document Assistant
+
+## Overview
+
+AI-Powered Document Assistant is an advanced Retrieval-Augmented Generation (RAG) system that enables users to upload documents and interact with them through natural language conversations. The system leverages semantic search, hybrid retrieval, reranking, and Large Language Models (LLMs) to provide accurate, context-aware answers.
+
+---
+
+## Architecture Flow
+
+
+                    ┌─────────────────────┐
+                    │     User Uploads    │
+                    │   PDF Documents     │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │  PDF Text Extraction│
+                    │      (PyMuPDF)      │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Semantic Chunking   │
+                    │ (SemanticChunker)   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Embedding Generation│
+                    │ (BGE Base Model)    │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   ChromaDB Vector   │
+                    │       Storage       │
+                    └──────────┬──────────┘
+                               │
+                User Query     │
+                    │          │
+                    ▼          ▼
+          ┌──────────────────────────┐
+          │ Query Embedding Creation │
+          └──────────┬───────────────┘
+                     │
+                     ▼
+          ┌──────────────────────────┐
+          │   Hybrid Retrieval       │
+          │  • Dense Search          │
+          │  • BM25 Search           │
+          └──────────┬───────────────┘
+                     │
+                     ▼
+          ┌──────────────────────────┐
+          │ Cross-Encoder Reranking  │
+          └──────────┬───────────────┘
+                     │
+                     ▼
+          ┌──────────────────────────┐
+          │   Top Relevant Chunks    │
+          └──────────┬───────────────┘
+                     │
+                     ▼
+          ┌──────────────────────────┐
+          │ Large Language Model     │
+          │ (Gemini/OpenAI)          │
+          └──────────┬───────────────┘
+                     │
+                     ▼
+          ┌──────────────────────────┐
+          │ Context-Aware Response   │
+          └──────────────────────────┘
+```
+
+---
+
+## Core Components
+
+### 1. Document Processing Layer
+
+* Extracts text from uploaded PDF documents using PyMuPDF.
+* Preserves page-level metadata for accurate source attribution.
+
+### 2. Semantic Chunking Layer
+
+* Splits extracted text into semantically meaningful chunks.
+* Maintains contextual coherence while improving retrieval quality.
+
+### 3. Embedding Layer
+
+* Generates dense vector representations using `BAAI/bge-base-en-v1.5`.
+* Converts both document chunks and user queries into embeddings.
+
+### 4. Vector Storage Layer
+
+* Stores embeddings and metadata in ChromaDB.
+* Supports persistent storage and session-based filtering.
+
+### 5. Retrieval Layer
+
+Implements a Hybrid Retrieval strategy:
+
+* **Dense Retrieval:** Semantic similarity search using ChromaDB.
+* **Sparse Retrieval:** Keyword-based retrieval using BM25.
+
+Combining both approaches improves recall and retrieval accuracy.
+
+### 6. Reranking Layer
+
+* Uses Cross-Encoder (`ms-marco-MiniLM-L-6-v2`) to rerank retrieved chunks.
+* Ensures only the most relevant contexts are passed to the LLM.
+
+### 7. Generation Layer
+
+* Retrieves top-ranked contexts.
+* Uses a Large Language Model to generate accurate, grounded responses.
+
+### 8. Conversational Memory Layer
+
+* Stores chat history for each uploaded document session.
+* Allows users to resume conversations with previously uploaded documents.
+
+---
+
+## Technology Stack
+
+| Component          | Technology            |
+| ------------------ | --------------------- |
+| Frontend           | Streamlit             |
+| Document Parsing   | PyMuPDF               |
+| Chunking           | SemanticChunker       |
+| Embeddings         | BAAI/bge-base-en-v1.5 |
+| Vector Database    | ChromaDB              |
+| Sparse Retrieval   | BM25                  |
+| Reranking          | Cross Encoder         |
+| LLM                | Gemini/OpenAI         |
+| Session Management | JSON-based Storage    |
+
+---
+
+## Key Features
+
+* Multi-document conversational interface
+* Semantic chunking for improved context preservation
+* Hybrid retrieval (Dense + Sparse Search)
+* Cross-encoder reranking
+* Persistent document sessions
+* Source attribution with page references
+* Conversational memory support
+* Retrieval-Augmented Generation (RAG) architecture
+
+---
+
+## Retrieval Pipeline
+
+```text
+User Query
+      │
+      ▼
+Query Embedding
+      │
+      ▼
+Hybrid Retrieval
+(Dense + BM25)
+      │
+      ▼
+Candidate Documents
+      │
+      ▼
+Cross-Encoder Reranking
+      │
+      ▼
+Top-K Relevant Chunks
+      │
+      ▼
+LLM Response Generation
+      │
+      ▼
+Final Answer with Sources
+```
